@@ -12,5 +12,13 @@
  */
 
 return [
-    // ...
+    'httpclient'=>[
+        'base_uri'=>'http://localhost:8081/',
+        'headers'=>[
+            'Accept'=>'*/*',
+        ],
+        'authors'=>[
+            'route'=>'authors',
+        ],
+    ],
 ];

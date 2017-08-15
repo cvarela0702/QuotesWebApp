@@ -16,6 +16,7 @@ return [
         'base_uri'=>'http://localhost:8081/',
         'headers'=>[
             'Accept'=>'*/*',
+            'Content-Type'=>'application/json',
         ],
         'authors'=>[
             'route'=>'authors',

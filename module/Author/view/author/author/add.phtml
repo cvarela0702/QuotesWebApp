@@ -1,0 +1,37 @@
+<?php
+$title = 'Add Authors';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<?php
+$form->setAttribute('action',$this->url('author', ['action'=>'add']));
+$form->prepare();
+$first_name=$form->get('first_name');
+$last_name=$form->get('last_name');
+$dob=$form->get('dob');
+
+
+echo $this->form()->openTag($form);
+?>
+<div class="form-group">
+    <?= $this->formLabel($first_name) ?>
+    <?= $this->formElement($first_name) ?>
+    <?= $this->formElementErrors()->render($first_name,['class'=>'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($last_name) ?>
+    <?= $this->formElement($last_name) ?>
+    <?= $this->formElementErrors()->render($last_name,['class'=>'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($dob) ?>
+    <?= $this->formElement($dob) ?>
+    <?= $this->formElementErrors()->render($dob,['class'=>'help-block']) ?>
+</div>
+
+<?php
+echo $this->formHidden($form->get('entity_id'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();

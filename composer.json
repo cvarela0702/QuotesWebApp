@@ -16,7 +16,9 @@
         "zendframework/zend-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
         "zendframework/zend-mvc": "^3.0.1",
         "zfcampus/zf-development-mode": "^3.0",
-        "zendframework/zftool": "dev-master"
+        "zendframework/zftool": "dev-master",
+        "zendframework/zend-form": "^2.10",
+        "zendframework/zend-inputfilter": "^2.7"
     },
     "autoload": {
         "psr-4": {

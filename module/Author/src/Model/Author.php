@@ -100,7 +100,7 @@ class Author implements InputFilterAwareInterface
         return $this->inputFilter;
     }
     
-    public function getData()
+    public function getArrayCopy()
     {
         $data=[];
         $data['entity_id']=!empty($this->entity_id) ? $this->entity_id : null;

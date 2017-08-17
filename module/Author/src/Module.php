@@ -23,18 +23,11 @@ class Module implements ConfigProviderInterface
             'factories'=>[
                 Model\AuthorRestCollection::class=>function($container) {
                     $httpClient=$container->get(Model\AuthorHttpClient::class);
-                    return new Model\AuthorRestCollection($httpClient);
-                },
-                Model\AuthorHttpClient::class=>function($container) {
                     $config=$container->get('config');
-                    $client=new Client($config['httpclient']['base_uri'].
-                            $config['httpclient']['authors']['route']);
-                    $client->setHeaders($config['httpclient']['headers']);
-                    $client->setAuth(
-                            $config['httpclient']['basic_auth']['user'],
-                            $config['httpclient']['basic_auth']['password']
-                            );
-                    return $client;
+                    return new Model\AuthorRestCollection($httpClient,$config['httpclient']);
+                },
+                Model\AuthorHttpClient::class=>function() {
+                    return new Client();
                 },
             ],
         ];

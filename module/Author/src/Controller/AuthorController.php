@@ -58,4 +58,43 @@ class AuthorController extends AbstractActionController
         $this->restcollection->saveAuthor($author);
         return $this->redirect()->toRoute('author');
     }
+    
+    public function editAction()
+    {
+        $entity_id=(int) $this->params()->fromRoute('id', 0);
+        if($entity_id===0)
+        {
+            return $this->redirect()->toRoute('author',['action'=>'add']);
+        }
+        
+        try {
+            $author=$this->restcollection->getAuthor($entity_id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('author', ['action'=>'index']);
+        }
+        
+        $form=new AuthorForm();
+        $form->bind($author);
+        $form->get('submit')->setAttribute('value', 'Edit');
+        
+        $request=$this->getRequest();
+        $viewData=['entity_id'=>$entity_id,'form'=>$form];
+        
+        if(!$request->isPost())
+        {
+            return $viewData;
+        }
+        
+        $form->setInputFilter($author->getInputFilter());
+        $form->setData($request->getPost());
+        
+        if(!$form->isValid())
+        {
+            return $viewData;
+        }
+        
+        $this->restcollection->saveAuthor($author);
+        
+        return $this->redirect()->toRoute('author', ['action'=>'index']);
+    }
 }

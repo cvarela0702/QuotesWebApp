@@ -98,6 +98,18 @@ class AuthorRestCollection
         $author->exchangeArray(get_object_vars($all));
         return $author;
     }
+    
+    public function deleteAuthor($id)
+    {
+        $id=(int)$id;
+        $this->httpClient->setMethod('DELETE');
+        $this->httpClient->setUri($this->httpClientUri."/$id");
+        $res=$this->httpClient->send();
+        if($res->getStatusCode()!=204)
+        {
+            throw new RuntimeException(sprintf("The author with ID %d was not deleted", $id));
+        }
+    }
 
 
     public function setJson($json)

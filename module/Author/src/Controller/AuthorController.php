@@ -97,4 +97,30 @@ class AuthorController extends AbstractActionController
         
         return $this->redirect()->toRoute('author', ['action'=>'index']);
     }
+    
+    public function deleteAction()
+    {
+        $entity_id=(int) $this->params()->fromRoute('id', 0);
+        if($entity_id===0)
+        {
+            return $this->redirect()->toRoute('author');
+        }
+        
+        $request=$this->getRequest();
+        if($request->isPost())
+        {
+            $del=$request->getPost('del','No');
+            
+            if($del=='Yes')
+            {
+                $id=(int) $request->getPost('entity_id');
+                $this->restcollection->deleteAuthor($id);
+            }
+            return $this->redirect()->toRoute('author');
+        }
+        return [
+            'entity_id'=>$entity_id,
+            'author'=>$this->restcollection->getAuthor($entity_id),
+        ];
+    }
 }

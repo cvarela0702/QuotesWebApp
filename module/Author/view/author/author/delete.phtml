@@ -1,0 +1,17 @@
+<?php
+$title = 'Delete Author';
+$this->headTitle($title);
+$url=$this->url('author',['action'=>'delete','id'=>$entity_id]);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    Are you sure you want to delete this author: <?php echo $author->first_name.' '. $author->last_name?>?
+</p>
+
+<form action="<?php echo $url;?>" method="post">
+    <div class="form-group">
+        <input type="hidden" name="entity_id" value="<?php echo $entity_id;?>"/>
+        <input type="submit" class="btn btn-danger" name="del" value="Yes"/>
+        <input type="submit" class="btn btn-success" name="del" value="No"/>
+    </div>
+</form>

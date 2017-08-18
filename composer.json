@@ -18,7 +18,8 @@
         "zfcampus/zf-development-mode": "^3.0",
         "zendframework/zftool": "dev-master",
         "zendframework/zend-form": "^2.10",
-        "zendframework/zend-inputfilter": "^2.7"
+        "zendframework/zend-inputfilter": "^2.7",
+        "zendframework/zend-paginator": "^2.7"
     },
     "autoload": {
         "psr-4": {

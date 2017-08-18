@@ -7,6 +7,9 @@ use Zend\Json\Json;
 
 use RuntimeException;
 
+use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\Paginator\Paginator;
+
 
 /**
  * Description of AuthorRestCollection
@@ -45,13 +48,30 @@ class AuthorRestCollection
         $this->httpClient->setMethod($this->httpClientMethod);
     }
     
-    public function fetchAll()
+    public function fetchAll($paginated=false)
     {
+        if($paginated===true)
+        {
+            return $this->fetchPaginatedResults();
+        }
         $this->httpClient->setMethod('GET');
         $res=$this->httpClient->send();
         $json=$this->getJson();
         $all=$json->decode($res->getContent());
         return $all;
+    }
+    
+    public function fetchPaginatedResults()
+    {
+        $this->httpClient->setMethod('GET');
+        $res=$this->httpClient->send();
+        $json=$this->getJson();
+        $all=$json->decode($res->getContent());
+        
+        $paginatorAdapter=new ArrayAdapter($all->_embedded->authors);
+        
+        $paginator=new Paginator($paginatorAdapter);
+        return $paginator;
     }
     
     public function saveAuthor(Author $author)

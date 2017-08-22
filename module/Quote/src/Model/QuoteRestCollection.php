@@ -1,26 +1,21 @@
 <?php
 
-namespace Author\Model;
+namespace Quote\Model;
 
 use Zend\Http\Client;
 use Zend\Json\Json;
-
 use RuntimeException;
-
 use Zend\Paginator\Adapter\ArrayAdapter;
-use Zend\Paginator\Paginator;
-
+use Paginator;
 
 /**
- * Description of AuthorRestCollection
+ * Description of QuoteRestCollection
  *
  * @author gabriel
  */
-class AuthorRestCollection
-{
+class QuoteRestCollection {
     private $httpClient;
     private $json;
-    
     private $httpClientUri;
     private $httpClientHeaders;
     private $httpClientMethod;
@@ -32,10 +27,10 @@ class AuthorRestCollection
         $this->setHttpClientSettings($httpClientSettings);
     }
     
-    private function setHttpClientSettings(array $httpClientSettings)
+    public function setHttpClientSettings(array $httpClientSettings)
     {
         $this->httpClientUri=$httpClientSettings['base_uri'].
-                $httpClientSettings['authors']['route'];
+                $httpClientSettings['quotes']['route'];
         $this->httpClientHeaders=$httpClientSettings['headers'];
         $this->httpClientAuth=$httpClientSettings['basic_auth'];
         $this->httpClientMethod=$httpClientSettings['method'];
@@ -48,11 +43,16 @@ class AuthorRestCollection
         $this->httpClient->setMethod($this->httpClientMethod);
     }
     
-    public function fetchAll($paginated=false)
+    public function fetchAll($paginated=false,$conditions=null)
     {
+        if(!is_null($conditions))
+        {
+            $uri=$this->httpClient->getUri();
+            $uri->setQuery($conditions);
+        }
         if($paginated===true)
         {
-            return $this->fetchPaginatedResults();
+            return $this->fetchPaginatedResults($conditions);
         }
         $this->httpClient->setMethod('GET');
         $res=$this->httpClient->send();
@@ -68,15 +68,15 @@ class AuthorRestCollection
         $json=$this->getJson();
         $all=$json->decode($res->getContent());
         
-        $paginatorAdapter=new ArrayAdapter($all->_embedded->authors);
+        $paginatorAdapter=new ArrayAdapter($all->_embedded->quotes);
         
         $paginator=new Paginator($paginatorAdapter);
         return $paginator;
     }
     
-    public function saveAuthor(Author $author)
+    public function saveQuote(Quote $quote)
     {
-        $data=$author->getArrayCopy();
+        $data=$quote->getArrayCopy();
         $entity_id=(int)$data['entity_id'];
         
         if(empty($entity_id))
@@ -94,15 +94,15 @@ class AuthorRestCollection
         $res=$this->httpClient->send();
         if(empty($entity_id) and $res->getStatusCode()!=201)
         {
-            throw new RuntimeException("The author could not be saved.");
+            throw new RuntimeException("The quote could not be saved.");
         }
         if(!empty($entity_id) and $res->getStatusCode()!=200)
         {
-            throw new RuntimeException("The author could not be saved.");
+            throw new RuntimeException("The quote could not be saved.");
         }
     }
     
-    public function getAuthor($id)
+    public function getQuote($id)
     {
         $id=(int)$id;
         $this->httpClient->setMethod('GET');
@@ -110,16 +110,16 @@ class AuthorRestCollection
         $res=$this->httpClient->send();
         if($res->getStatusCode()!=200)
         {
-            throw new RuntimeException(sprintf("There is no author with ID %d", $id));
+            throw new RuntimeException(sprintf("There is no quote with ID %d", $id));
         }
         $json=$this->getJson();
         $all=$json->decode($res->getContent());
-        $author=new Author();
-        $author->exchangeArray(get_object_vars($all));
-        return $author;
+        $quote=new Quote();
+        $quote->exchangeArray(get_object_vars($all));
+        return $quote;
     }
     
-    public function deleteAuthor($id)
+    public function deleteQuote($id)
     {
         $id=(int)$id;
         $this->httpClient->setMethod('DELETE');
@@ -127,10 +127,10 @@ class AuthorRestCollection
         $res=$this->httpClient->send();
         if($res->getStatusCode()!=204)
         {
-            throw new RuntimeException(sprintf("The author with ID %d was not deleted", $id));
+            throw new RuntimeException(sprintf("The quote with ID %d was not deleted", $id));
         }
     }
-
+    
     public function setJson($json)
     {
         $this->json=$json;

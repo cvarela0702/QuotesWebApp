@@ -5,6 +5,8 @@ namespace Author;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\Http\Client;
 
+use Quote\Model\QuoteRestCollection;
+
 /**
  * Description of Module
  *
@@ -26,7 +28,15 @@ class Module implements ConfigProviderInterface
                     $config=$container->get('config');
                     return new Model\AuthorRestCollection($httpClient,$config['httpclient']);
                 },
+                Model\QuoteRestCollection::class=>function($container) {
+                    $httpClient=$container->get(Model\QuoteHttpClient::class);
+                    $config=$container->get('config');
+                    return new \Quote\Model\QuoteRestCollection($httpClient, $config['httpclient']);
+                },
                 Model\AuthorHttpClient::class=>function() {
+                    return new Client();
+                },
+                Model\QuoteHttpClient::class=>function() {
                     return new Client();
                 },
             ],
@@ -38,8 +48,12 @@ class Module implements ConfigProviderInterface
         return [
             'factories'=>[
                 Controller\AuthorController::class=>function($container) {
+                    $authorRestCollection=$container->get(Model\AuthorRestCollection::class);
+                    $quoteRestCollection=$container->get(Model\QuoteRestCollection::class);
                     return new Controller\AuthorController(
-                            $container->get(Model\AuthorRestCollection::class));
+                                $authorRestCollection,
+                                $quoteRestCollection
+                            );
                 }
             ],
         ];

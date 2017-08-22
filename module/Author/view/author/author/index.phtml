@@ -32,6 +32,13 @@ $this->headTitle($title);
         <td>
             <a href="<?php echo $this->url(
                     'author',[
+                        'action'=>'view',
+                        'id'=>$author->entity_id,
+                    ]
+                    );?>">View
+            </a>
+            <a href="<?php echo $this->url(
+                    'author',[
                         'action'=>'edit',
                         'id'=>$author->entity_id,
                     ]

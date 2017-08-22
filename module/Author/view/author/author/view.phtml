@@ -1,0 +1,79 @@
+<?php
+$title = 'View Author';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<table class="table table-bordered table-responsive table-hover table-striped">
+    <tr>
+        <th scope="row">
+            ID
+        </th>
+        <td>
+            <?php echo $author->entity_id;?>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            First name
+        </th>
+        <td>
+            <?php echo $author->first_name;?>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Last name
+        </th>
+        <td>
+            <?php echo $author->last_name;?>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Date of Birth
+        </th>
+        <td>
+            <?php echo $author->dob;?>
+        </td>
+    </tr>
+</table>
+<h2>Quotes</h2>
+<p>
+    <a href="<?= $this->url('quote', ['action' => 'add']) ?>">Add new quote</a>
+</p>
+<?php if(!isset($quotes_by_author->_embedded->quotesrest) or empty($quotes_by_author->_embedded->quotesrest)):?>
+<p>No quotes found</p>
+<?php else:?>
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Quote</th>
+        <th>Location</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach($quotes_by_author->_embedded->quotesrest as $quote):?>
+    <tr>
+        <td><?php echo $this->escapeHtml($quote->entity_id);?></td>
+        <td><?php echo $this->escapeHtml($quote->quote);?></td>
+        <td><?php echo $this->escapeHtml($quote->location);?></td>
+        <td>
+            <a href="<?php echo $this->url(
+                    'quote',[
+                        'action'=>'edit',
+                        'id'=>$quote->entity_id,
+                    ]
+                    );?>">Edit
+            </a>
+            <a href="<?php echo $this->url(
+                    'quote',[
+                        'action'=>'delete',
+                        'id'=>$quote->entity_id,
+                    ]
+                    );?>">Delete
+            </a>
+        </td>
+    </tr>
+    <?php endforeach;?>
+</table>
+<?php endif; ?>
+

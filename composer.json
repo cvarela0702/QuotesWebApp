@@ -24,7 +24,8 @@
     "autoload": {
         "psr-4": {
             "Application\\": "module/Application/src/",
-            "Author\\":"module/Author/src/"
+            "Author\\":"module/Author/src/",
+            "Quote\\":"module/Quote/src/"
         }
     },
     "autoload-dev": {

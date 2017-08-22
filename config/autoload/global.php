@@ -21,6 +21,9 @@ return [
         'authors'=>[
             'route'=>'authors',
         ],
+        'quotes'=>[
+            'route'=>'quotesrest',
+        ],
         'method'=>'GET',
     ],
 ];

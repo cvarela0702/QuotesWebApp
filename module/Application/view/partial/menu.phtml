@@ -1,0 +1,24 @@
+<ul class="<?php echo $this->navigation()->menu()->getUlClass() ?>">
+    <?php foreach ($this->container as $page):?>
+    <?php if($page->getLabel()!='Home'):?>
+    <li <?php echo ($page->isActive())?"class='active'":'';?> <?php echo (count($page->pages)>0)?"class='dropdown'":'';?>>
+        <?php if(count($page->pages)>0):?>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <?php echo $page->getLabel();?> <span class="caret"></span>
+            <ul class="dropdown-menu">
+                <?php foreach($page->pages as $ppage):?>
+                <?php if($ppage->getAction()=='index' or $ppage->getAction()=='add'):?>
+                <li>
+                    <a href="<?php echo $ppage->getHref();?>"><?php echo $ppage->getLabel();?></a>
+                </li>
+                <?php endif;?>
+                <?php endforeach;?>
+            </ul>
+        </a>
+        <?php else:?>
+        <a href="<?php echo $page->getHref();?>"><?php echo $page->getLabel();?></a>
+        <?php endif;?>
+    </li>
+    <?php endif;?>
+    <?php endforeach;?>
+</ul>

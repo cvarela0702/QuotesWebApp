@@ -19,7 +19,8 @@
         "zendframework/zftool": "dev-master",
         "zendframework/zend-form": "^2.10",
         "zendframework/zend-inputfilter": "^2.7",
-        "zendframework/zend-paginator": "^2.7"
+        "zendframework/zend-paginator": "^2.7",
+        "zendframework/zend-navigation": "^2.8"
     },
     "autoload": {
         "psr-4": {
